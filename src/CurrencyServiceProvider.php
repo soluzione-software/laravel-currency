@@ -16,6 +16,8 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         $this->registerCurrency();
 
+        $this->registerManager();
+
         if ($this->app->runningInConsole()) {
             $this->registerResources();
             $this->registerCurrencyCommands();
@@ -34,6 +36,18 @@ class CurrencyServiceProvider extends ServiceProvider
                 $app->config->get('currency', []),
                 $app['cache']
             );
+        });
+    }
+
+    /**
+     * Register currency manager.
+     *
+     * @return void
+     */
+    public function registerManager()
+    {
+        $this->app->singleton(SourceManager::class, function ($app) {
+            return new SourceManager($app);
         });
     }
 
